@@ -12,6 +12,7 @@ Parameters:
   PubSubnetCIDR:
     Type: String
 Resources:
+  #create vpc
   MainVPC:
     Type: AWS::EC2::VPC
     Properties: 
@@ -19,6 +20,7 @@ Resources:
       Tags: 
         - Key: Name
           Value: "Main VPC"
+  #create and attach internet gateway to vpc
   InternetGW:
     Type: AWS::EC2::InternetGateway
   AttachInternetGateway:
@@ -26,6 +28,7 @@ Resources:
     Properties:
       VpcId: !Ref MainVPC
       InternetGatewayId: !Ref InternetGW
+  #create subnet
   PublicSubnet1:
     Type: AWS::EC2::Subnet
     Properties: 
@@ -48,6 +51,7 @@ Resources:
         - Key: Name
           Value: "Private Subnet AZ1"
       VpcId: !Ref MainVPC
+  #create NAT
   NAT:
     Type: AWS::EC2::NatGateway
     Properties:
@@ -59,6 +63,7 @@ Resources:
         Tags:
         - Key: Name
           Value: "NAT to be used by servers in the private subnet"
+  # elastic IP to assign to the NAT gateway
   EIP:
     Type: AWS::EC2::EIP
     Properties:
